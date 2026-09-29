@@ -107,6 +107,13 @@ h1{font-family:var(--head);position:absolute;left:0;right:0;text-align:center;to
 #s7 .zsg{width:640px}
 .mini{display:flex;justify-content:center;align-items:center;gap:34px;margin-top:26px;opacity:.9}
 
+
+.draft{position:absolute;top:56px;right:-100px;width:420px;transform:rotate(35deg);background:var(--alarm);color:var(--white);text-align:center;font:800 30px var(--head);letter-spacing:.2em;padding:8px 0;z-index:15;box-shadow:0 4px 14px rgba(0,0,0,.25);pointer-events:none}
+.tag{position:absolute;z-index:7;font:700 16px var(--body);padding:7px 14px;border-radius:16px;box-shadow:0 4px 14px rgba(0,0,0,.15)}
+.tag.ext{background:#fff4e5;color:#8a4b00;border:2px solid #f0b56b}
+.tag.int{background:#e6f5ef;color:var(--insel-dk);border:2px solid var(--insel)}
+.ph{display:inline-block;font:700 13px var(--body);color:#8a4b00;background:#fff4e5;border:1px dashed #f0b56b;border-radius:10px;padding:2px 8px;margin-left:8px;vertical-align:middle}
+.wbar div{background:repeating-linear-gradient(45deg,var(--alarm) 0 10px,#d9604f 10px 20px)!important}
 #play{position:absolute;inset:0;display:grid;place-items:center;background:rgba(15,26,23,.55);z-index:20;cursor:pointer;border:0;color:var(--white);font:700 22px var(--head)}
 #play[hidden]{display:none}
 #play div{display:flex;flex-direction:column;align-items:center;gap:16px}
@@ -133,6 +140,7 @@ h1{font-family:var(--head);position:absolute;left:0;right:0;text-align:center;to
     <h1>Heute: zwei Zentren, zwei Websites</h1>
     <div class="br a"><div class="bar"><em></em><em></em><em></em><u>stoffwechsel-gewichtsregulation.insel.ch</u></div><img class="sh" src="assets/z_home.jpg" alt="Startseite ZSG"></div>
     <div class="br b"><div class="bar"><em></em><em></em><em></em><u>adipositasbern.ch</u></div><img class="sh" src="assets/a_home.jpg" alt="Startseite Adipositaszentrum Bern"></div>
+    <div class="tag ext" style="right:110px;top:180px;transform:rotate(2deg)">Extern gehostet · nicht Insel-Standard</div>
     <div class="cap"><span>Wohin gehört meine Patientin?</span></div>
   </section>
 
@@ -163,9 +171,9 @@ h1{font-family:var(--head);position:absolute;left:0;right:0;text-align:center;to
     <div class="node" id="n-z" style="left:1180px;top:220px;width:300px"><img src="assets/zsg_logo.svg" alt="Inselspital – Zentrum für Stoffwechsel und Gewichtsregulation" style="width:260px"><small>UDEM</small></div>
     <div class="node" id="n-a" style="left:1180px;top:470px;width:300px"><img src="assets/adi_logo.png" alt="Adipositaszentrum Bern" style="width:190px"><small>Viszerale Chirurgie</small></div>
     <div class="pt" id="dot"></div>
-    <div class="wait">Wartezeit bei Fehlzuweisung
+    <div class="wait">Wartezeit bei Fehlzuweisung<span class="ph">Platzhalter</span>
       <div class="wbar"><div id="w1">1–2 Monate</div><div id="w2">+ 1–2 Monate</div></div>
-      <div class="wtot" id="wt">bis zu 4 Monate</div></div>
+      <div class="wtot" id="wt">bis zu 4 Monate<span class="ph">Zahlen zu definieren</span></div></div>
   </section>
 
   <!-- S4 Zertifikate -->
@@ -194,7 +202,7 @@ h1{font-family:var(--head);position:absolute;left:0;right:0;text-align:center;to
               <p>Wenn konservative und medikamentöse Therapien nicht ausreichen, bietet das Zentrum die gesamte Adipositaschirurgie an, interdisziplinär abgestimmt.</p>
               <div class="chips"><span>Magenbypass</span><span>Schlauchmagen</span><span>Minibypass</span><span>Endosleeve</span><span>Magenballon</span><span>Häufige Fragen</span></div>
               <p style="margin-top:14px">Spitalaufenthalt nach Magenbypass: 3–5 Tage.</p>
-              <div class="src"><img src="assets/adi_logo.png" alt="Adipositaszentrum Bern">Inhalte des Adipositaszentrums Bern, integriert</div>
+              <div class="src"><img src="assets/adi_logo.png" alt="Adipositaszentrum Bern">Inhalte des Adipositaszentrums Bern, neu nach Insel-Standard gehostet</div>
             </div>
             <div class="vids">
               <figure class="vid" style="margin:0"><img src="assets/vid1.jpg" alt=""><figcaption>Universitäres Adipositaszentrum Bern</figcaption></figure>
@@ -205,6 +213,7 @@ h1{font-family:var(--head);position:absolute;left:0;right:0;text-align:center;to
         <div class="pg" data-p="3"><img class="sh" src="assets/z_zuweiser.jpg" alt="ZSG Ärzteschaft und Zuweisende"></div>
       </div>
     </div>
+    <div class="tag int fade" data-at="0.36" style="left:1120px;top:500px">Extern → Insel-Standard gehostet</div>
     <div class="fly" id="f1" style="left:1250px;top:560px"><img src="assets/a_bypass.jpg" alt=""><span>adipositasbern.ch</span></div>
     <div class="fly" id="f2" style="left:1250px;top:700px"><img src="assets/vid2.jpg" alt=""><span>Video</span></div>
     <div class="side">
@@ -240,6 +249,7 @@ h1{font-family:var(--head);position:absolute;left:0;right:0;text-align:center;to
     </div>
   </section>
 
+  <div class="draft" aria-hidden="true">ENTWURF</div>
   <button id="play" type="button" aria-label="Video abspielen"><div><i></i><span>Abspielen (mit Ton)</span></div></button>
 </div></div>
 <div class="ctrl">
