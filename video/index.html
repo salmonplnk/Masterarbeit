@@ -1,241 +1,333 @@
 <title>Eine Website für Adipositas Bern</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;800;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Open+Sans:wght@400;600;700&display=swap">
 <style>
-/* Layout: fixed 1600×900 stage (16:9), scaled to fit; scenes are absolutely stacked and cross-faded on a timeline. */
+/* Layout: fixed 1600×900 stage (16:9) scaled to fit; scenes stacked and cross-faded; scene lengths follow the voiceover clips. */
 :root{
-  --insel:#00956d; --insel-dk:#006b4f; --mint:#d4e4c4; --coral:#ec8a74; --ink:#2f3a38; --mute:#6b7976;
-  --paper:#f5f7f6; --white:#fff; --alarm:#d4402e; --frame:#0f1a17;
-  --display:"Mulish","Segoe UI",Helvetica,Arial,sans-serif;
+  --insel:#00956d; --insel-dk:#006b4f; --mint:#e3efe9; --coral:#ec8a74; --ink:#3c4543; --mute:#6b7976;
+  --paper:#f3f5f4; --white:#fff; --alarm:#c8412f; --frame:#0f1a17; --easo:#1f4a9c;
+  --head:"Montserrat","Segoe UI",Helvetica,Arial,sans-serif; --body:"Open Sans","Segoe UI",Helvetica,Arial,sans-serif;
   color-scheme:dark;
 }
 html,body{height:100%}
-body{background:var(--frame);color:var(--ink);font-family:var(--display);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding-inline:16px;box-sizing:border-box;overflow:hidden}
+body{background:var(--frame);color:var(--ink);font-family:var(--body);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding-inline:16px;box-sizing:border-box;overflow:hidden;margin:0}
 #wrap{width:100%;max-width:1600px;aspect-ratio:16/9;position:relative;max-height:calc(100% - 60px)}
 #stage{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;background:var(--paper);overflow:hidden;border-radius:6px}
-.scene{position:absolute;inset:0;opacity:0;transition:opacity .7s ease;pointer-events:none}
+.scene{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;pointer-events:none}
 .scene.on{opacity:1}
-.cap{position:absolute;left:0;right:0;bottom:46px;text-align:center;font-size:34px;font-weight:800;color:var(--white);text-shadow:0 2px 12px rgba(0,0,0,.35)}
-.cap span{background:rgba(15,26,23,.78);padding:10px 24px;border-radius:6px}
-.logo{position:absolute;top:34px;left:48px;display:flex;align-items:center;gap:14px;font-weight:900;font-size:26px;letter-spacing:.14em;color:var(--mute);z-index:5}
-.logo i{display:inline-block;width:14px;height:30px;background:var(--insel);border-radius:3px 3px 0 0;box-shadow:18px 0 0 var(--insel)}
-.logo b{color:var(--insel);font-weight:600;margin-left:14px}
-.logo small{font-size:15px;letter-spacing:.05em;font-weight:600;border-left:2px solid var(--mint);padding-left:14px}
+h1{font-family:var(--head);position:absolute;left:0;right:0;text-align:center;top:60px;font-size:52px;font-weight:800;margin:0;color:var(--ink);text-wrap:balance}
+.cap{position:absolute;left:0;right:0;bottom:36px;text-align:center;font:700 30px var(--head);color:var(--white)}
+.cap span{background:rgba(15,26,23,.8);padding:10px 24px;border-radius:6px}
+.fade{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}
+.fade.show{opacity:1;transform:none}
 
-/* S1 two sites */
-.shot{position:absolute;width:680px;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden;background:var(--white);transition:transform 1.4s cubic-bezier(.2,.8,.2,1)}
-.shot .bar{height:30px;background:#e4e8e7;display:flex;align-items:center;gap:6px;padding-left:12px;font-size:13px;color:var(--mute)}
-.shot .bar em{width:10px;height:10px;border-radius:50%;background:#c9cfcd;display:inline-block}
-.shot .bar u{text-decoration:none;margin-left:14px;background:var(--white);padding:3px 12px;border-radius:10px}
-.shot img{display:block;width:100%}
-#s1 h1,#s2 h1,#s4 h1,#s3 h1{position:absolute;left:0;right:0;text-align:center;top:110px;font-size:60px;font-weight:900;margin:0;text-wrap:balance}
-#s1 .a{left:90px;top:240px;transform:translateX(-900px) rotate(-3deg)}
-#s1 .b{right:90px;top:260px;transform:translateX(900px) rotate(3deg)}
-#s1.on .a{transform:translateX(0) rotate(-3deg)} #s1.on .b{transform:translateX(0) rotate(3deg)}
-.vs{position:absolute;left:760px;top:470px;width:80px;height:80px;border-radius:50%;background:var(--alarm);color:var(--white);font-weight:900;font-size:40px;display:grid;place-items:center;z-index:3}
+/* browser frame */
+.br{position:absolute;border-radius:8px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.22);background:var(--white)}
+.br .bar{height:30px;background:#e4e8e7;display:flex;align-items:center;gap:6px;padding-left:12px;font-size:13px;color:var(--mute)}
+.br .bar em{width:10px;height:10px;border-radius:50%;background:#c9cfcd;display:inline-block}
+.br .bar u{text-decoration:none;margin-left:14px;background:var(--white);padding:3px 12px;border-radius:10px}
+.br img.sh{display:block;width:100%}
 
-/* S2 problems */
-#s2{background:#eef1f0}
-#s2 .shot{width:520px;left:80px;top:230px;transform:rotate(-2deg);filter:grayscale(.6)}
-#s2 .shot.b{left:200px;top:330px;transform:rotate(3deg)}
-.probs{position:absolute;left:820px;top:230px;display:flex;flex-direction:column;gap:22px;width:700px}
-.prob{display:flex;align-items:center;gap:22px;font-size:34px;font-weight:800;opacity:0;transform:translateX(40px);transition:all .5s ease}
-.prob.show{opacity:1;transform:none}
-.prob b{flex:none;width:52px;height:52px;border-radius:50%;background:var(--alarm);color:var(--white);display:grid;place-items:center;font-size:30px}
-.prob small{display:block;font-size:20px;font-weight:600;color:var(--mute)}
+/* S1 */
+#s1 .br{width:700px;transition:transform 1.3s cubic-bezier(.2,.8,.2,1)}
+#s1 .a{left:80px;top:190px;transform:translateX(-900px) rotate(-2deg)}
+#s1 .b{right:80px;top:215px;transform:translateX(900px) rotate(2deg)}
+#s1.on .a{transform:rotate(-2deg)} #s1.on .b{transform:rotate(2deg)}
 
-/* S3 referral flow */
-#s3{background:var(--white)}
-#flow{position:absolute;left:0;top:0}
-.node{position:absolute;width:260px;padding:22px;border-radius:12px;text-align:center;font-weight:800;font-size:26px;background:var(--paper);border:3px solid #cfd8d5}
-.node small{display:block;font-size:17px;color:var(--mute);font-weight:600;margin-top:6px}
-.node.hz{left:120px;top:420px}
-.node.a{left:670px;top:250px;border-color:var(--coral)}
-.node.b{left:1220px;top:560px;border-color:var(--insel)}
-.pt{position:absolute;width:34px;height:34px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 6px rgba(47,58,56,.15)}
-.clock{position:absolute;right:120px;top:230px;font-size:30px;font-weight:900;color:var(--alarm);text-align:right}
-.clock span{display:block;font-size:64px}
-.xmark{position:absolute;left:880px;top:440px;font-size:80px;font-weight:900;color:var(--alarm);opacity:0;transition:opacity .3s}
+/* S2 */
+#s2 .br{width:500px;filter:grayscale(.7)}
+#s2 .a{left:70px;top:210px;transform:rotate(-2deg)} #s2 .b{left:190px;top:320px;transform:rotate(3deg)}
+.list{position:absolute;left:800px;top:200px;display:flex;flex-direction:column;gap:22px;width:730px}
+.item{display:flex;align-items:center;gap:20px;font:700 30px var(--head)}
+.item b{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:var(--white);font-size:26px}
+.item small{display:block;font:600 19px var(--body);color:var(--mute);margin-top:2px}
+.bad b{background:var(--alarm)} .good b{background:var(--insel)}
 
-/* S4 new site */
-#s4{background:linear-gradient(160deg,var(--white) 0 55%,var(--mint) 55%)}
-#s4 h1{color:var(--insel-dk);top:96px}
-.new{position:absolute;left:110px;top:210px;width:860px;border-radius:10px;overflow:hidden;box-shadow:0 30px 80px rgba(0,80,60,.25);background:var(--white);transform:scale(.9);transition:transform 1.2s}
-#s4.on .new{transform:scale(1)}
-.new .bar u{color:var(--insel-dk);font-weight:700}
-.hdr{display:flex;align-items:center;gap:16px;padding:20px 26px;border-bottom:1px solid #e5ecea}
-.leaf{width:40px;height:40px;border-radius:0 60% 0 60%;background:var(--insel);position:relative}
-.leaf:after{content:"";position:absolute;right:-10px;bottom:-8px;width:24px;height:24px;border-radius:50%;background:var(--coral)}
-.hdr strong{font-size:20px;line-height:1.15;color:var(--ink)}
-.hdr nav{margin-left:auto;display:flex;gap:18px;font-size:15px;font-weight:800;color:var(--ink)}
-.hero{background:var(--insel);color:var(--white);padding:30px 32px}
-.hero h2{margin:0 0 6px;font-size:32px}
-.hero p{margin:0;font-size:17px;opacity:.9}
-.paths{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:22px 26px}
-.path{border:2px solid #dbe5e2;border-radius:8px;padding:16px;font-size:16px;color:var(--mute)}
-.path b{display:block;font-size:19px;color:var(--ink);margin-bottom:4px}
-.path.hot{border-color:var(--coral);background:#fdf1ee}
-.cta{margin:0 26px 24px;background:var(--insel-dk);color:var(--white);font-weight:800;font-size:19px;padding:16px;border-radius:8px;text-align:center}
-.pros{position:absolute;left:1020px;top:230px;display:flex;flex-direction:column;gap:20px;width:520px}
-.pro{display:flex;gap:18px;align-items:center;font-size:28px;font-weight:800;opacity:0;transform:translateY(20px);transition:all .5s}
-.pro.show{opacity:1;transform:none}
-.pro b{flex:none;width:48px;height:48px;border-radius:50%;background:var(--insel);color:var(--white);display:grid;place-items:center;font-size:28px}
-.pro small{display:block;font-size:18px;color:var(--mute);font-weight:600}
+/* S3 channels */
+#s3,#s6{background:var(--white)}
+.flow{position:absolute;inset:0}
+.node{position:absolute;padding:18px 20px;border-radius:12px;text-align:center;font:800 24px var(--head);background:var(--paper);border:3px solid #cfd8d5;display:flex;flex-direction:column;align-items:center;gap:8px}
+.node small{font:600 15px var(--body);color:var(--mute)}
+.node img{display:block}
+.ch{position:absolute;left:560px;width:400px;padding:12px 16px;border-radius:30px;background:var(--white);border:2px solid #cfd8d5;font:700 19px var(--body);display:flex;align-items:center;gap:12px;transition:all .6s}
+.ch i{font-style:normal;flex:none;width:30px;height:30px;border-radius:50%;background:var(--mint);display:grid;place-items:center;font-size:16px}
+.ch.il{border-color:var(--insel);background:#e6f5ef}
+.ch.il small{font:600 13px var(--body);color:var(--insel-dk);margin-left:auto}
+.wait{position:absolute;left:1030px;top:720px;width:500px;font:700 20px var(--head);color:var(--mute)}
+.wbar{display:flex;gap:6px;margin-top:8px;height:34px}
+.wbar div{background:var(--alarm);color:var(--white);display:grid;place-items:center;font-size:16px;border-radius:4px;width:0;transition:width .8s;overflow:hidden;white-space:nowrap}
+.wtot{font-size:34px;color:var(--alarm);margin-top:8px;opacity:0;transition:opacity .4s}
+.pt{position:absolute;width:30px;height:30px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 6px rgba(236,138,116,.25);z-index:4}
 
-/* S5 end */
-#s5{background:var(--insel);color:var(--white);display:grid;place-items:center;text-align:center}
-#s5 h1{font-size:88px;margin:0;line-height:1.1;font-weight:900}
-#s5 p{font-size:28px;opacity:.9;margin-top:26px}
-#s5 .logo{color:var(--white)} #s5 .logo i{background:var(--white);box-shadow:18px 0 0 var(--white)} #s5 .logo b{color:var(--white)}
+/* S4 certificates */
+#s4{background:linear-gradient(180deg,var(--white) 0 62%,var(--mint) 62%)}
+#s4 .zsg{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:760px}
+.certs{position:absolute;left:0;right:0;top:420px;display:flex;justify-content:center;gap:60px;align-items:stretch}
+.cert{background:var(--white);border-radius:12px;box-shadow:0 12px 40px rgba(0,80,60,.12);padding:34px 40px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;width:520px}
+.cert p{margin:0;font:600 17px var(--body);color:var(--mute);text-align:center}
+.smoc{font:800 30px var(--head);color:var(--insel-dk);text-align:center;line-height:1.25}
+.smoc span{display:block;font:600 16px var(--body);color:var(--mute);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
 
-#play{position:absolute;inset:0;display:grid;place-items:center;background:rgba(15,26,23,.55);z-index:20;cursor:pointer;border:0;color:var(--white);font:800 22px var(--display)}
+/* S5 new site */
+#s5{background:linear-gradient(160deg,var(--white) 0 55%,var(--mint) 55%)}
+#s5 .br{left:70px;top:150px;width:1000px;height:680px}
+.pages{position:relative;height:650px;overflow:hidden}
+.pg{position:absolute;inset:0;transition:transform .8s cubic-bezier(.2,.8,.2,1);transform:translateX(100%);background:var(--white)}
+.pg.cur{transform:none} .pg.prev{transform:translateX(-100%)}
+.pg img.sh{width:100%}
+.zhdr{height:150px;overflow:hidden;border-bottom:1px solid #e5ecea}
+.zhdr img{width:100%;display:block}
+.bari{padding:22px 60px;display:grid;grid-template-columns:1.1fr 1fr;gap:28px}
+.crumb{grid-column:1/-1;font-size:14px;color:var(--mute)} .crumb b{color:var(--insel)}
+.bari h3{grid-column:1/-1;margin:0;font:700 30px var(--head);color:var(--ink)}
+.bari p{margin:0 0 10px;font-size:15px;line-height:1.55;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{font-size:13px;font-weight:700;background:var(--mint);color:var(--insel-dk);padding:6px 10px;border-radius:14px}
+.vids{display:flex;flex-direction:column;gap:14px}
+.vid{position:relative;border-radius:6px;overflow:hidden}
+.vid img{display:block;width:100%;height:150px;object-fit:cover}
+.vid:after{content:"";position:absolute;left:50%;top:40%;transform:translate(-40%,-50%);border-left:30px solid var(--white);border-top:19px solid transparent;border-bottom:19px solid transparent;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5))}
+.vid figcaption{position:absolute;left:0;right:0;bottom:0;padding:8px 12px;background:linear-gradient(transparent,rgba(0,0,0,.7));color:var(--white);font-size:13px;font-weight:700}
+.src{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--mute)}
+.src img{height:26px}
+.fly{position:absolute;width:280px;border-radius:8px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.25);z-index:6;transition:all 1s cubic-bezier(.5,0,.2,1)}
+.fly img{display:block;width:100%}
+.fly span{position:absolute;left:8px;top:8px;background:var(--white);font-size:12px;font-weight:700;padding:3px 8px;border-radius:10px;color:var(--ink)}
+.side{position:absolute;left:1120px;top:180px;width:420px;display:flex;flex-direction:column;gap:22px}
+.side .item{font-size:26px}
+
+/* S6 */
+.triage{position:absolute;left:1040px;top:370px;width:210px;padding:18px;border-radius:12px;background:var(--insel);color:var(--white);font:800 20px var(--head);text-align:center}
+.triage small{display:block;font:600 14px var(--body);opacity:.9;margin-top:6px}
+.count{position:absolute;left:560px;top:160px;font:800 26px var(--head);color:var(--insel-dk)}
+
+/* S7 */
+#s7{background:var(--white);display:grid;place-items:center;text-align:center}
+#s7 h2{font:800 76px/1.12 var(--head);margin:36px 0 0;color:var(--insel-dk)}
+#s7 p{font-size:22px;color:var(--mute);margin-top:22px}
+#s7 .zsg{width:640px}
+.mini{display:flex;justify-content:center;align-items:center;gap:34px;margin-top:26px;opacity:.9}
+
+#play{position:absolute;inset:0;display:grid;place-items:center;background:rgba(15,26,23,.55);z-index:20;cursor:pointer;border:0;color:var(--white);font:700 22px var(--head)}
+#play[hidden]{display:none}
 #play div{display:flex;flex-direction:column;align-items:center;gap:16px}
 #play i{width:0;height:0;border-left:44px solid var(--white);border-top:28px solid transparent;border-bottom:28px solid transparent;margin-left:10px}
-#play[hidden]{display:none}
 #play:focus-visible{outline:4px solid var(--coral)}
-.ctrl{display:flex;gap:12px;align-items:center;color:#9fb3ad;font-size:13px;flex-wrap:wrap;justify-content:center}
-.ctrl button{background:#1f2e2a;color:var(--white);border:1px solid #33463f;border-radius:6px;padding:7px 14px;font:600 13px var(--display);cursor:pointer}
-.ctrl input[type=range]{width:200px;accent-color:var(--insel)}
-@media (prefers-reduced-motion:reduce){.scene,.shot,.prob,.pro,.new{transition:none!important}}
+.ctrl{display:flex;gap:12px;align-items:center;color:#9fb3ad;font:13px var(--body);flex-wrap:wrap;justify-content:center}
+.ctrl button{background:#1f2e2a;color:var(--white);border:1px solid #33463f;border-radius:6px;padding:7px 14px;font:600 13px var(--body);cursor:pointer}
+.ctrl input[type=range]{width:240px;accent-color:var(--insel)}
+@media (prefers-reduced-motion:reduce){.scene,.br,.fade,.pg,.fly,.ch{transition:none!important}}
 </style>
 
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="easocoms" viewBox="0 0 440 90">
+  <text x="0" y="52" font-family="Montserrat,Helvetica,Arial,sans-serif" font-size="62" font-weight="500" fill="#231f20" textLength="128" lengthAdjust="spacingAndGlyphs">EAS</text>
+  <ellipse cx="164" cy="31" rx="30" ry="24" fill="#1f4a9c"/><ellipse cx="166" cy="31" rx="16" ry="21" fill="#fff"/>
+  <text x="198" y="52" font-family="Montserrat,Helvetica,Arial,sans-serif" font-size="62" font-weight="500" fill="#231f20" textLength="240" lengthAdjust="spacingAndGlyphs">COMs</text>
+  <rect x="0" y="62" width="440" height="2" fill="#231f20"/>
+  <text x="2" y="84" font-family="Open Sans,Helvetica,Arial,sans-serif" font-size="17" textLength="436" lengthAdjust="spacingAndGlyphs" fill="#1f4a9c">EASO Collaborating Centres for Obesity Management</text>
+</symbol></defs></svg>
+
 <div id="wrap"><div id="stage">
-  <!-- S1 -->
+  <!-- S1 Ist-Zustand -->
   <section class="scene on" id="s1">
-    <div class="logo"><i></i>INSEL<b>SPITAL</b><small>UDEM · Bariatrie</small></div>
     <h1>Heute: zwei Zentren, zwei Websites</h1>
-    <div class="shot a"><div class="bar"><em></em><em></em><em></em><u>stoffwechsel-gewichtsregulation.insel.ch</u></div><img src="zsg.jpg" alt="Website Zentrum für Stoffwechsel und Gewichtsregulation"></div>
-    <div class="shot b"><div class="bar"><em></em><em></em><em></em><u>adipositasbern.ch</u></div><img src="adi.jpg" alt="Website Adipositaszentrum Bern"></div>
-    <div class="vs">?</div>
+    <div class="br a"><div class="bar"><em></em><em></em><em></em><u>stoffwechsel-gewichtsregulation.insel.ch</u></div><img class="sh" src="assets/z_home.jpg" alt="Startseite ZSG"></div>
+    <div class="br b"><div class="bar"><em></em><em></em><em></em><u>adipositasbern.ch</u></div><img class="sh" src="assets/a_home.jpg" alt="Startseite Adipositaszentrum Bern"></div>
     <div class="cap"><span>Wohin gehört meine Patientin?</span></div>
   </section>
 
-  <!-- S2 -->
+  <!-- S2 Nachteile -->
   <section class="scene" id="s2">
     <h1>Die Nachteile</h1>
-    <div class="shot a"><div class="bar"><em></em><em></em><em></em><u>ZSG</u></div><img src="zsg.jpg" alt=""></div>
-    <div class="shot b"><div class="bar"><em></em><em></em><em></em><u>Adipositaszentrum</u></div><img src="adi.jpg" alt=""></div>
-    <div class="probs">
-      <div class="prob"><b>!</b><div>Doppelte Inhalte<small>Zwei Angebote, zwei Texte, zweimal Pflegeaufwand</small></div></div>
-      <div class="prob"><b>!</b><div>Unklare Zuständigkeit<small>Zuweisende wissen nicht, wo sie anmelden sollen</small></div></div>
-      <div class="prob"><b>!</b><div>Verwirrte Patient:innen<small>Zwei Telefonnummern, zwei Anlaufstellen</small></div></div>
-      <div class="prob"><b>!</b><div>Uneinheitliches Branding<small>Zwei Logos, zwei Auftritte, eine Insel</small></div></div>
-      <div class="prob"><b>!</b><div>Schwache Google-Sichtbarkeit<small>Die Seiten konkurrieren um dieselben Suchbegriffe</small></div></div>
+    <div class="br a"><div class="bar"><em></em><em></em><em></em><u>ZSG</u></div><img class="sh" src="assets/z_home.jpg" alt=""></div>
+    <div class="br b"><div class="bar"><em></em><em></em><em></em><u>Adipositaszentrum</u></div><img class="sh" src="assets/a_home.jpg" alt=""></div>
+    <div class="list" data-seq>
+      <div class="item bad fade"><b>!</b><div>Doppelte Inhalte<small>Zwei Angebote, zwei Texte, zweimal Pflegeaufwand</small></div></div>
+      <div class="item bad fade"><b>!</b><div>Unklare Zuständigkeit<small>Zuweisende wissen nicht, wo sie anmelden sollen</small></div></div>
+      <div class="item bad fade"><b>!</b><div>Verwirrte Patient:innen<small>Mehrere Nummern, mehrere Anlaufstellen</small></div></div>
+      <div class="item bad fade"><b>!</b><div>Uneinheitlicher Auftritt<small>Zwei Logos, zwei Designs, ein Spital</small></div></div>
+      <div class="item bad fade"><b>!</b><div>Schwache Google-Sichtbarkeit<small>Die Seiten konkurrieren um dieselben Suchbegriffe</small></div></div>
     </div>
   </section>
 
-  <!-- S3 -->
+  <!-- S3 Kanal-Chaos -->
   <section class="scene" id="s3">
-    <h1>Der Umweg der Zuweisung</h1>
-    <svg id="flow" width="1600" height="900" viewBox="0 0 1600 900">
-      <path id="p1" d="M380 470 C 520 470, 540 300, 670 300" fill="none" stroke="#9aa7a3" stroke-width="5" stroke-dasharray="12 10"/>
-      <path id="p2" d="M930 320 C 1080 340, 1100 610, 1220 610" fill="none" stroke="#d4402e" stroke-width="5" stroke-dasharray="12 10"/>
-    </svg>
-    <div class="node hz">Hausärztin<small>weist zu</small></div>
-    <div class="node a">Zentrum A<small>«Hier nicht zuständig»</small></div>
-    <div class="node b">Zentrum B<small>endlich richtig</small></div>
-    <div class="xmark">✕</div>
+    <h1>Fünf Wege der Zuweisung</h1>
+    <svg class="flow" id="chaos" width="1600" height="900" viewBox="0 0 1600 900"></svg>
+    <div class="node" id="n-zw" style="left:90px;top:400px;width:240px">Zuweisende<small>Hausärzt:innen, Spitäler</small></div>
+    <div class="ch il" data-c="0" style="top:230px"><i>⇄</i>InselLink<small>von beiden genutzt</small></div>
+    <div class="ch" data-c="1" style="top:318px"><i>@</i>udem@insel.ch</div>
+    <div class="ch" data-c="2" style="top:406px"><i>@</i>bauchzentrum@insel.ch</div>
+    <div class="ch" data-c="3" style="top:494px"><i>☏</i>Telefon Viszerale Chirurgie</div>
+    <div class="ch" data-c="4" style="top:582px"><i>▤</i>Online-Formular adipositasbern.ch</div>
+    <div class="node" id="n-z" style="left:1180px;top:220px;width:300px"><img src="assets/zsg_logo.svg" alt="Inselspital – Zentrum für Stoffwechsel und Gewichtsregulation" style="width:260px"><small>UDEM</small></div>
+    <div class="node" id="n-a" style="left:1180px;top:470px;width:300px"><img src="assets/adi_logo.png" alt="Adipositaszentrum Bern" style="width:190px"><small>Viszerale Chirurgie</small></div>
     <div class="pt" id="dot"></div>
-    <div class="clock">Wartezeit<span id="wk">0 Wo.</span></div>
-    <div class="cap"><span>Viele Patient:innen landen zuerst am falschen Ort.</span></div>
+    <div class="wait">Wartezeit bei Fehlzuweisung
+      <div class="wbar"><div id="w1">1–2 Monate</div><div id="w2">+ 1–2 Monate</div></div>
+      <div class="wtot" id="wt">bis zu 4 Monate</div></div>
   </section>
 
-  <!-- S4 -->
+  <!-- S4 Zertifikate -->
   <section class="scene" id="s4">
-    <h1>Neu: eine gemeinsame Website</h1>
-    <div class="new">
-      <div class="shot" style="position:static;width:auto;box-shadow:none;border-radius:0"><div class="bar"><em></em><em></em><em></em><u>stoffwechsel-gewichtsregulation.insel.ch</u></div></div>
-      <div class="hdr"><div class="leaf"></div><strong>Zentrum für Stoffwechsel<br>und Gewichtsregulation</strong><nav><span>Patient:innen</span><span>Angebot</span><span>Zuweisende</span><span>Kontakt</span></nav></div>
-      <div class="hero"><h2>Ein Zentrum. Alle Therapien.</h2><p>Konservativ, medikamentös und bariatrisch, interdisziplinär aus einer Hand.</p></div>
-      <div class="paths">
-        <div class="path"><b>Ernährung &amp; Bewegung</b>Beratung, Programme</div>
-        <div class="path"><b>Medikamentös</b>GLP-1 &amp; Co., UDEM</div>
-        <div class="path hot"><b>Bariatrische Chirurgie</b>Adipositaszentrum</div>
-      </div>
-      <div class="cta">Eine Zuweisung · ein Formular · interne Triage</div>
+    <img class="zsg fade" data-at="0.05" src="assets/zsg_logo.svg" alt="Inselspital – Zentrum für Stoffwechsel und Gewichtsregulation">
+    <div class="certs">
+      <div class="cert fade" data-at="0.2"><svg width="440" height="90" role="img" aria-label="EASO COMs – EASO Collaborating Centres for Obesity Management"><use href="#easocoms"/></svg><p>Zertifiziert nach den Standards der European Association for the Study of Obesity</p></div>
+      <div class="cert fade" data-at="0.45"><div class="smoc"><span>Anerkannt als</span>Swiss Medical Obesity Center</div><p>Recognition as Swiss Medical Obesity Center</p></div>
     </div>
-    <div class="pros">
-      <div class="pro"><b>✓</b><div>Ein Einstiegspunkt<small>Eine Adresse, eine Nummer</small></div></div>
-      <div class="pro"><b>✓</b><div>Klare Triage<small>Richtiger Pfad ab dem ersten Kontakt</small></div></div>
-      <div class="pro"><b>✓</b><div>Behandlungspfad auf einen Blick<small>Vom Erstgespräch bis zur Operation</small></div></div>
-      <div class="pro"><b>✓</b><div>Ein Auftritt, bessere Auffindbarkeit<small>Einheitliches Insel-Branding, starkes SEO</small></div></div>
+    <div class="cap"><span>Die zertifizierte Basis für die gemeinsame Website</span></div>
+  </section>
+
+  <!-- S5 Neue Website -->
+  <section class="scene" id="s5">
+    <h1 style="top:56px;color:var(--insel-dk)">Neu: eine gemeinsame Website</h1>
+    <div class="br"><div class="bar"><em></em><em></em><em></em><u>stoffwechsel-gewichtsregulation.insel.ch</u></div>
+      <div class="pages">
+        <div class="pg" data-p="0"><img class="sh" src="assets/z_home.jpg" alt="Startseite ZSG"></div>
+        <div class="pg" data-p="1"><img class="sh" src="assets/z_angebot.jpg" alt="ZSG Unser Angebot"></div>
+        <div class="pg" data-p="2">
+          <div class="zhdr"><img src="assets/z_home.jpg" alt=""></div>
+          <div class="bari">
+            <div class="crumb">Unser Angebot → <b>Bariatrische Chirurgie</b></div>
+            <h3>Bariatrische Chirurgie</h3>
+            <div>
+              <p>Wenn konservative und medikamentöse Therapien nicht ausreichen, bietet das Zentrum die gesamte Adipositaschirurgie an, interdisziplinär abgestimmt.</p>
+              <div class="chips"><span>Magenbypass</span><span>Schlauchmagen</span><span>Minibypass</span><span>Endosleeve</span><span>Magenballon</span><span>Häufige Fragen</span></div>
+              <p style="margin-top:14px">Spitalaufenthalt nach Magenbypass: 3–5 Tage.</p>
+              <div class="src"><img src="assets/adi_logo.png" alt="Adipositaszentrum Bern">Inhalte des Adipositaszentrums Bern, integriert</div>
+            </div>
+            <div class="vids">
+              <figure class="vid" style="margin:0"><img src="assets/vid1.jpg" alt=""><figcaption>Universitäres Adipositaszentrum Bern</figcaption></figure>
+              <figure class="vid" style="margin:0"><img src="assets/vid2.jpg" alt=""><figcaption>Übergewichtschirurgie – was Sie schon immer wissen wollten</figcaption></figure>
+            </div>
+          </div>
+        </div>
+        <div class="pg" data-p="3"><img class="sh" src="assets/z_zuweiser.jpg" alt="ZSG Ärzteschaft und Zuweisende"></div>
+      </div>
+    </div>
+    <div class="fly" id="f1" style="left:1250px;top:560px"><img src="assets/a_bypass.jpg" alt=""><span>adipositasbern.ch</span></div>
+    <div class="fly" id="f2" style="left:1250px;top:700px"><img src="assets/vid2.jpg" alt=""><span>Video</span></div>
+    <div class="side">
+      <div class="item good fade" data-at="0.05"><b>✓</b><div>Ein Einstiegspunkt<small>Alle Therapien unter einem Dach</small></div></div>
+      <div class="item good fade" data-at="0.4"><b>✓</b><div>Inhalte integriert<small>Chirurgie-Seiten und Videos</small></div></div>
+      <div class="item good fade" data-at="0.75"><b>✓</b><div>Ein Auftritt<small>Einheitlich, besser auffindbar</small></div></div>
     </div>
   </section>
 
-  <!-- S5 -->
-  <section class="scene" id="s5">
-    <div class="logo"><i></i>INSEL<b>SPITAL</b><small>UDEM · Bariatrie</small></div>
-    <div><h1>Ein Zentrum.<br>Eine Website.<br>Ein Weg.</h1><p>Zentrum für Stoffwechsel und Gewichtsregulation · Inselspital Bern</p></div>
+  <!-- S6 Neue Zuweisung -->
+  <section class="scene" id="s6">
+    <h1>Neu: Zuweisung nach klaren Kriterien</h1>
+    <svg class="flow" id="order" width="1600" height="900" viewBox="0 0 1600 900"></svg>
+    <div class="count" id="cnt">5 Wege</div>
+    <div class="node" style="left:90px;top:400px;width:240px">Zuweisende<small>Hausärzt:innen, Spitäler</small></div>
+    <div class="ch il" data-k="0" style="top:230px"><i>⇄</i>InselLink<small>bleibt</small></div>
+    <div class="ch" data-k="1" style="top:318px"><i>@</i>udem@insel.ch</div>
+    <div class="ch" data-k="2" style="top:406px"><i>@</i>bauchzentrum@insel.ch</div>
+    <div class="ch" data-k="3" style="top:494px"><i>☏</i>Telefon Viszerale Chirurgie</div>
+    <div class="ch" data-k="4" style="top:582px"><i>▤</i>Online-Formular adipositasbern.ch</div>
+    <div class="ch" data-n="1" style="top:370px;opacity:0"><i>●</i>Definierte Stelle</div>
+    <div class="ch" data-n="2" style="top:510px;opacity:0"><i>●</i>Definierte Stelle</div>
+    <div class="triage fade" data-at="0.45">Triage<small>nach definierten Kriterien</small></div>
+    <div class="node fade" data-at="0.6" style="left:1330px;top:360px;width:220px;border-color:var(--insel)"><img src="assets/zsg_logo.svg" alt="" style="width:190px"><small>richtiger Pfad ab Tag 1</small></div>
+  </section>
+
+  <!-- S7 Schluss -->
+  <section class="scene" id="s7">
+    <div>
+      <img class="zsg" src="assets/zsg_logo.svg" alt="Inselspital – Zentrum für Stoffwechsel und Gewichtsregulation">
+      <h2>Ein Zentrum.<br>Eine Website. Ein Weg.</h2>
+      <div class="mini"><svg width="260" height="54" role="img" aria-label="EASO COMs"><use href="#easocoms"/></svg><span style="font:700 16px var(--head);color:var(--insel-dk)">Swiss Medical Obesity Center</span></div>
+    </div>
   </section>
 
   <button id="play" type="button" aria-label="Video abspielen"><div><i></i><span>Abspielen (mit Ton)</span></div></button>
 </div></div>
 <div class="ctrl">
   <button id="replay" type="button">Neu starten</button>
-  <label for="voice">Voiceover</label><input type="checkbox" id="voice" checked>
-  <input type="range" id="seek" min="0" max="27" step="0.1" value="0" aria-label="Zeitleiste">
+  <input type="range" id="seek" min="0" max="45" step="0.1" value="0" aria-label="Zeitleiste">
   <span id="t">0.0 s</span>
 </div>
 
 <script>
 const stage=document.getElementById('stage'),wrap=document.getElementById('wrap');
 function fit(){stage.style.transform=`scale(${wrap.clientWidth/1600})`}addEventListener('resize',fit);fit();
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const DUR=27;
-// timeline: [start, sceneId]
-const SC=[[0,'s1'],[5,'s2'],[11,'s3'],[17,'s4'],[24,'s5']];
-const VO=[
- [0.3,'Heute hat das Inselspital zwei Zentren – und zwei Websites.'],
- [5.2,'Das heisst: doppelte Inhalte, unklare Zuständigkeiten und verwirrte Patientinnen und Patienten.'],
- [11.2,'Viele werden zuerst dem falschen Zentrum zugewiesen – und verlieren Wochen.'],
- [17.2,'Die Lösung: eine gemeinsame Website, aufgebaut auf dem ZSG. Ein Einstieg, eine Zuweisung, klare Triage.'],
- [24.1,'Ein Zentrum. Eine Website. Ein Weg.']];
-let t0=null,raf,spoken=new Set(),ac,master,musicNodes=[];
+const $=s=>document.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+
+// Scenes: id, voiceover clip, minimum length (s). Actual length = max(min, clip + 0.7s).
+const SC=[['s1','assets/vo1.mp3',5],['s2','assets/vo2.mp3',6],['s3','assets/vo3.mp3',8],['s4','assets/vo4.mp3',6],['s5','assets/vo5.mp3',9],['s6','assets/vo6.mp3',5],['s7','assets/vo7.mp3',4]];
+const clips=SC.map(s=>{const a=new Audio(s[1]);a.preload='auto';return a});
+let starts=[],DUR=0;
+function layout(){let t=0;starts=SC.map((s,i)=>{const st=t;const d=isFinite(clips[i].duration)?clips[i].duration:0;t+=Math.max(s[2],d+0.7);return st});DUR=t+0.8;$('#seek').max=DUR.toFixed(1)}
+clips.forEach(a=>a.addEventListener('loadedmetadata',()=>{layout();render(+$('#seek').value)}));layout();
+
+// channel lines (S3 chaos, S6 order)
+const chY=[252,340,428,516,604],ZW=[330,440],TZ=[1180,280],TA=[1180,530];
+function curve(a,b){const mx=(a[0]+b[0])/2;return `M${a[0]} ${a[1]} C ${mx} ${a[1]}, ${mx} ${b[1]}, ${b[0]} ${b[1]}`}
+(function(){const g=$('#chaos');let h='';
+  chY.forEach((y,i)=>{h+=`<path class="ln" d="${curve(ZW,[560,y])}" stroke="#aab5b2" stroke-width="3" fill="none"/>`;
+    const tgts=i===0?[TZ,TA]:i===1?[TZ,TA]:i===4?[TA,TZ]:[TA,TZ];
+    tgts.forEach((tg,k)=>h+=`<path class="ln" d="${curve([960,y],[tg[0],tg[1]+(k?30:-10)+i*6])}" stroke="${k?'#e3a79a':'#9fb8b0'}" stroke-width="${k?2:3}" stroke-dasharray="${k?'8 7':''}" fill="none"/>`)});
+  h+=`<path id="bad1" d="${curve([960,428],[1180,530])}" fill="none" stroke="none"/><path id="bad2" d="M1330 470 C 1400 420, 1400 380, 1330 330" fill="none" stroke="none"/>`;
+  g.innerHTML=h;
+  const o=$('#order');o.innerHTML=`<path class="ok" d="${curve(ZW,[560,252])}" stroke="#00956d" stroke-width="4" fill="none"/>`+
+   `<path class="ok" d="${curve(ZW,[560,392])}" stroke="#00956d" stroke-width="4" fill="none"/><path class="ok" d="${curve(ZW,[560,532])}" stroke="#00956d" stroke-width="4" fill="none"/>`+
+   [252,392,532].map(y=>`<path class="ok" d="${curve([960,y],[1040,410])}" stroke="#00956d" stroke-width="4" fill="none"/>`).join('')+
+   `<path class="ok" d="M1250 410 L1330 410" stroke="#00956d" stroke-width="4" fill="none"/>`;
+  $$('.ln,.ok').forEach(p=>{const L=p.getTotalLength();p.style.strokeDasharray=p.getAttribute('stroke-dasharray')||L;p.dataset.L=L});
+})();
 
 function render(t){
-  let cur='s1';for(const[s,id]of SC)if(t>=s)cur=id;
-  $$('.scene').forEach(e=>e.classList.toggle('on',e.id===cur));
-  $$('.prob').forEach((e,i)=>e.classList.toggle('show',t>5.8+i*0.9));
-  $$('.pro').forEach((e,i)=>e.classList.toggle('show',t>18.6+i*1.1));
-  // S3 dot along paths
-  const lt=t-11,dot=$('#dot'),p1=$('#p1'),p2=$('#p2');let pt;
-  if(lt<2.2){const L=p1.getTotalLength();pt=p1.getPointAtLength(L*Math.max(0,Math.min(1,lt/2)))}
-  else{const L=p2.getTotalLength();pt=p2.getPointAtLength(L*Math.max(0,Math.min(1,(lt-3)/2)))}
-  dot.style.left=(pt.x-17)+'px';dot.style.top=(pt.y-17)+'px';
-  $('.xmark').style.opacity=lt>2&&lt<3.6?1:0;
-  $('#wk').textContent=Math.round(Math.max(0,Math.min(6,(lt-0.5)*1.4)))+' Wo.';
+  let si=0;starts.forEach((s,i)=>{if(t>=s)si=i});
+  const lt=t-starts[si],sd=(starts[si+1]??DUR)-starts[si],f=Math.max(0,Math.min(1,lt/sd));
+  $$('.scene').forEach((e,i)=>e.classList.toggle('on',i===si));
+  const sc=$('#'+SC[si][0]);
+  $$('[data-at]',sc).forEach(e=>e.classList.toggle('show',f>=+e.dataset.at));
+  if(si===1)$$('.item',sc).forEach((e,i)=>e.classList.toggle('show',lt>0.5+i*0.9));
+  if(si===2){ // chaos lines draw, dot misroutes, waiting bar
+    $$('.ln',sc).forEach((p,i)=>{const k=Math.max(0,Math.min(1,(lt-0.2-i*0.08)/0.8));if(!p.getAttribute('stroke-dasharray'))p.style.strokeDashoffset=p.dataset.L*(1-k);p.style.opacity=k});
+    const d=$('#dot');let pt;
+    if(lt<2.6){d.style.opacity=0}else if(lt<4){const p=$('#bad1'),L=p.getTotalLength();pt=p.getPointAtLength(L*(lt-2.6)/1.4)}
+    else if(lt<4.6){pt={x:1180,y:530}}else{const p=$('#bad2'),L=p.getTotalLength();pt=p.getPointAtLength(L*Math.min(1,(lt-4.6)/1.2))}
+    if(pt){d.style.opacity=1;d.style.left=(pt.x-15)+'px';d.style.top=(pt.y-15)+'px'}
+    $('#w1').style.width=lt>3.8?'230px':'0';$('#w2').style.width=lt>5.2?'230px':'0';$('#wt').style.opacity=lt>6?1:0;
+  }
+  if(si===4){ // page carousel + content flying in
+    const pgI=f<0.18?0:f<0.36?1:f<0.8?2:3;
+    $$('.pg',sc).forEach(e=>{const p=+e.dataset.p;e.classList.toggle('cur',p===pgI);e.classList.toggle('prev',p<pgI)});
+    const inF=f>0.36&&f<0.5;const done=f>=0.5;
+    for(const [id,x,y] of [['#f1',560,400],['#f2',720,500]]){const e=$(id);
+      e.style.opacity=done?0:1;if(inF||done){e.style.left=x+'px';e.style.top=y+'px';e.style.transform='scale(.5)'}else{e.style.left='1250px';e.style.top=(id==='#f1'?560:700)+'px';e.style.transform='none'}}
+  }
+  if(si===5){ // collapse channels
+    const c=f>0.2;
+    $$('[data-k]',sc).forEach(e=>{const k=+e.dataset.k;if(k===0)return;e.style.opacity=c?0:1;e.style.transform=c?'translateX(-40px) scale(.9)':'none'});
+    $$('[data-n]',sc).forEach(e=>e.style.opacity=f>0.3?1:0);
+    $('#cnt').textContent=f>0.3?'InselLink + wenige definierte Stellen':'5 Wege';
+    $$('.ok',sc).forEach((p,i)=>{const k=Math.max(0,Math.min(1,(f-0.35-i*0.03)/0.2));p.style.strokeDashoffset=p.dataset.L*(1-k)});
+  }
   $('#seek').value=t;$('#t').textContent=t.toFixed(1)+' s';
 }
 
-function say(txt){if(!$('#voice').checked||!('speechSynthesis'in window))return;
-  const u=new SpeechSynthesisUtterance(txt);const vs=speechSynthesis.getVoices();
-  u.voice=vs.find(v=>/de-CH/i.test(v.lang))||vs.find(v=>/^de/i.test(v.lang))||null;u.lang='de-CH';u.rate=1.08;speechSynthesis.speak(u)}
-
-// Background music: soft pad + pulse; minor before the fusion, major after.
+// Background music (Web Audio): soft pad + pulse, minor → major at the new website.
+let ac,master,nodes=[],t0=null,raf,played=new Set();
 function music(){
   ac=ac||new (window.AudioContext||window.webkitAudioContext)();
-  master=ac.createGain();master.gain.value=0.0;master.connect(ac.destination);
-  master.gain.linearRampToValueAtTime(0.13,ac.currentTime+1.5);
-  master.gain.setValueAtTime(0.13,ac.currentTime+DUR-2);master.gain.linearRampToValueAtTime(0,ac.currentTime+DUR);
-  const chords=[[0,[57,60,64]],[5,[53,57,60]],[11,[50,53,57]],[14,[52,56,59]],[17,[60,64,67]],[20.5,[55,59,62]],[24,[53,57,60,65]]];
-  const f=m=>440*Math.pow(2,(m-69)/12),now=ac.currentTime;
-  chords.forEach(([s,notes],i)=>{const e=(chords[i+1]?.[0]??DUR);
-    notes.forEach(n=>{const o=ac.createOscillator(),g=ac.createGain(),lp=ac.createBiquadFilter();
-      o.type='triangle';o.frequency.value=f(n);lp.type='lowpass';lp.frequency.value=1200;
-      g.gain.setValueAtTime(0,now+s);g.gain.linearRampToValueAtTime(0.18,now+s+0.6);g.gain.linearRampToValueAtTime(0,now+e+0.3);
-      o.connect(lp).connect(g).connect(master);o.start(now+s);o.stop(now+e+0.4);musicNodes.push(o)});
-    // pulse
+  master=ac.createGain();master.connect(ac.destination);const now=ac.currentTime;
+  master.gain.setValueAtTime(0,now);master.gain.linearRampToValueAtTime(0.07,now+1.5);master.gain.setValueAtTime(0.07,now+DUR-2);master.gain.linearRampToValueAtTime(0,now+DUR);
+  const f=m=>440*Math.pow(2,(m-69)/12);
+  const ch=[[0,[57,60,64]],[starts[1],[53,57,60]],[starts[2],[50,53,57]],[starts[2]+4,[52,56,59]],[starts[3],[55,59,62]],[starts[4],[60,64,67]],[starts[5],[57,60,64,67]],[starts[6],[53,57,60,65]]];
+  ch.forEach(([s,notes],i)=>{const e=(ch[i+1]?.[0]??DUR);
+    notes.forEach(n=>{const o=ac.createOscillator(),g=ac.createGain(),lp=ac.createBiquadFilter();o.type='triangle';o.frequency.value=f(n);lp.type='lowpass';lp.frequency.value=1100;
+      g.gain.setValueAtTime(0,now+s);g.gain.linearRampToValueAtTime(0.18,now+s+0.6);g.gain.linearRampToValueAtTime(0,now+e+0.3);o.connect(lp).connect(g).connect(master);o.start(now+s);o.stop(now+e+0.4);nodes.push(o)});
     for(let b=s;b<e;b+=0.5){const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=f(notes[0]-12);
-      g.gain.setValueAtTime(0.0001,now+b);g.gain.exponentialRampToValueAtTime(0.35,now+b+0.02);g.gain.exponentialRampToValueAtTime(0.0001,now+b+0.4);
-      o.connect(g).connect(master);o.start(now+b);o.stop(now+b+0.45);musicNodes.push(o)}
-  });
+      g.gain.setValueAtTime(0.0001,now+b);g.gain.exponentialRampToValueAtTime(0.3,now+b+0.02);g.gain.exponentialRampToValueAtTime(0.0001,now+b+0.4);o.connect(g).connect(master);o.start(now+b);o.stop(now+b+0.45);nodes.push(o)}});
 }
-function stopAll(){cancelAnimationFrame(raf);musicNodes.forEach(o=>{try{o.stop()}catch(e){}});musicNodes=[];try{speechSynthesis.cancel()}catch(e){}}
+function stopAll(){cancelAnimationFrame(raf);nodes.forEach(o=>{try{o.stop()}catch(e){}});nodes=[];clips.forEach(a=>{a.pause();a.currentTime=0})}
 function loop(){const t=(performance.now()-t0)/1000;
-  for(const[s,txt]of VO)if(t>=s&&!spoken.has(s)){spoken.add(s);say(txt)}
+  starts.forEach((s,i)=>{if(t>=s+0.25&&!played.has(i)){played.add(i);clips[i].play().catch(()=>{})}});
   render(Math.min(t,DUR));if(t<DUR)raf=requestAnimationFrame(loop)}
-function start(){stopAll();spoken.clear();$('#play').hidden=true;t0=performance.now();music();loop()}
+function start(){stopAll();layout();played.clear();$('#play').hidden=true;t0=performance.now();music();loop()}
 $('#play').onclick=start;$('#replay').onclick=start;
 $('#seek').oninput=e=>{stopAll();render(+e.target.value)};
-if('speechSynthesis'in window)speechSynthesis.getVoices();
 render(0);
 </script>
