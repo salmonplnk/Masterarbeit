@@ -1,0 +1,241 @@
+<title>Eine Website für Adipositas Bern</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;800;900&display=swap">
+<style>
+/* Layout: fixed 1600×900 stage (16:9), scaled to fit; scenes are absolutely stacked and cross-faded on a timeline. */
+:root{
+  --insel:#00956d; --insel-dk:#006b4f; --mint:#d4e4c4; --coral:#ec8a74; --ink:#2f3a38; --mute:#6b7976;
+  --paper:#f5f7f6; --white:#fff; --alarm:#d4402e; --frame:#0f1a17;
+  --display:"Mulish","Segoe UI",Helvetica,Arial,sans-serif;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--frame);color:var(--ink);font-family:var(--display);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding-inline:16px;box-sizing:border-box;overflow:hidden}
+#wrap{width:100%;max-width:1600px;aspect-ratio:16/9;position:relative;max-height:calc(100% - 60px)}
+#stage{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;background:var(--paper);overflow:hidden;border-radius:6px}
+.scene{position:absolute;inset:0;opacity:0;transition:opacity .7s ease;pointer-events:none}
+.scene.on{opacity:1}
+.cap{position:absolute;left:0;right:0;bottom:46px;text-align:center;font-size:34px;font-weight:800;color:var(--white);text-shadow:0 2px 12px rgba(0,0,0,.35)}
+.cap span{background:rgba(15,26,23,.78);padding:10px 24px;border-radius:6px}
+.logo{position:absolute;top:34px;left:48px;display:flex;align-items:center;gap:14px;font-weight:900;font-size:26px;letter-spacing:.14em;color:var(--mute);z-index:5}
+.logo i{display:inline-block;width:14px;height:30px;background:var(--insel);border-radius:3px 3px 0 0;box-shadow:18px 0 0 var(--insel)}
+.logo b{color:var(--insel);font-weight:600;margin-left:14px}
+.logo small{font-size:15px;letter-spacing:.05em;font-weight:600;border-left:2px solid var(--mint);padding-left:14px}
+
+/* S1 two sites */
+.shot{position:absolute;width:680px;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden;background:var(--white);transition:transform 1.4s cubic-bezier(.2,.8,.2,1)}
+.shot .bar{height:30px;background:#e4e8e7;display:flex;align-items:center;gap:6px;padding-left:12px;font-size:13px;color:var(--mute)}
+.shot .bar em{width:10px;height:10px;border-radius:50%;background:#c9cfcd;display:inline-block}
+.shot .bar u{text-decoration:none;margin-left:14px;background:var(--white);padding:3px 12px;border-radius:10px}
+.shot img{display:block;width:100%}
+#s1 h1,#s2 h1,#s4 h1,#s3 h1{position:absolute;left:0;right:0;text-align:center;top:110px;font-size:60px;font-weight:900;margin:0;text-wrap:balance}
+#s1 .a{left:90px;top:240px;transform:translateX(-900px) rotate(-3deg)}
+#s1 .b{right:90px;top:260px;transform:translateX(900px) rotate(3deg)}
+#s1.on .a{transform:translateX(0) rotate(-3deg)} #s1.on .b{transform:translateX(0) rotate(3deg)}
+.vs{position:absolute;left:760px;top:470px;width:80px;height:80px;border-radius:50%;background:var(--alarm);color:var(--white);font-weight:900;font-size:40px;display:grid;place-items:center;z-index:3}
+
+/* S2 problems */
+#s2{background:#eef1f0}
+#s2 .shot{width:520px;left:80px;top:230px;transform:rotate(-2deg);filter:grayscale(.6)}
+#s2 .shot.b{left:200px;top:330px;transform:rotate(3deg)}
+.probs{position:absolute;left:820px;top:230px;display:flex;flex-direction:column;gap:22px;width:700px}
+.prob{display:flex;align-items:center;gap:22px;font-size:34px;font-weight:800;opacity:0;transform:translateX(40px);transition:all .5s ease}
+.prob.show{opacity:1;transform:none}
+.prob b{flex:none;width:52px;height:52px;border-radius:50%;background:var(--alarm);color:var(--white);display:grid;place-items:center;font-size:30px}
+.prob small{display:block;font-size:20px;font-weight:600;color:var(--mute)}
+
+/* S3 referral flow */
+#s3{background:var(--white)}
+#flow{position:absolute;left:0;top:0}
+.node{position:absolute;width:260px;padding:22px;border-radius:12px;text-align:center;font-weight:800;font-size:26px;background:var(--paper);border:3px solid #cfd8d5}
+.node small{display:block;font-size:17px;color:var(--mute);font-weight:600;margin-top:6px}
+.node.hz{left:120px;top:420px}
+.node.a{left:670px;top:250px;border-color:var(--coral)}
+.node.b{left:1220px;top:560px;border-color:var(--insel)}
+.pt{position:absolute;width:34px;height:34px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 6px rgba(47,58,56,.15)}
+.clock{position:absolute;right:120px;top:230px;font-size:30px;font-weight:900;color:var(--alarm);text-align:right}
+.clock span{display:block;font-size:64px}
+.xmark{position:absolute;left:880px;top:440px;font-size:80px;font-weight:900;color:var(--alarm);opacity:0;transition:opacity .3s}
+
+/* S4 new site */
+#s4{background:linear-gradient(160deg,var(--white) 0 55%,var(--mint) 55%)}
+#s4 h1{color:var(--insel-dk);top:96px}
+.new{position:absolute;left:110px;top:210px;width:860px;border-radius:10px;overflow:hidden;box-shadow:0 30px 80px rgba(0,80,60,.25);background:var(--white);transform:scale(.9);transition:transform 1.2s}
+#s4.on .new{transform:scale(1)}
+.new .bar u{color:var(--insel-dk);font-weight:700}
+.hdr{display:flex;align-items:center;gap:16px;padding:20px 26px;border-bottom:1px solid #e5ecea}
+.leaf{width:40px;height:40px;border-radius:0 60% 0 60%;background:var(--insel);position:relative}
+.leaf:after{content:"";position:absolute;right:-10px;bottom:-8px;width:24px;height:24px;border-radius:50%;background:var(--coral)}
+.hdr strong{font-size:20px;line-height:1.15;color:var(--ink)}
+.hdr nav{margin-left:auto;display:flex;gap:18px;font-size:15px;font-weight:800;color:var(--ink)}
+.hero{background:var(--insel);color:var(--white);padding:30px 32px}
+.hero h2{margin:0 0 6px;font-size:32px}
+.hero p{margin:0;font-size:17px;opacity:.9}
+.paths{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:22px 26px}
+.path{border:2px solid #dbe5e2;border-radius:8px;padding:16px;font-size:16px;color:var(--mute)}
+.path b{display:block;font-size:19px;color:var(--ink);margin-bottom:4px}
+.path.hot{border-color:var(--coral);background:#fdf1ee}
+.cta{margin:0 26px 24px;background:var(--insel-dk);color:var(--white);font-weight:800;font-size:19px;padding:16px;border-radius:8px;text-align:center}
+.pros{position:absolute;left:1020px;top:230px;display:flex;flex-direction:column;gap:20px;width:520px}
+.pro{display:flex;gap:18px;align-items:center;font-size:28px;font-weight:800;opacity:0;transform:translateY(20px);transition:all .5s}
+.pro.show{opacity:1;transform:none}
+.pro b{flex:none;width:48px;height:48px;border-radius:50%;background:var(--insel);color:var(--white);display:grid;place-items:center;font-size:28px}
+.pro small{display:block;font-size:18px;color:var(--mute);font-weight:600}
+
+/* S5 end */
+#s5{background:var(--insel);color:var(--white);display:grid;place-items:center;text-align:center}
+#s5 h1{font-size:88px;margin:0;line-height:1.1;font-weight:900}
+#s5 p{font-size:28px;opacity:.9;margin-top:26px}
+#s5 .logo{color:var(--white)} #s5 .logo i{background:var(--white);box-shadow:18px 0 0 var(--white)} #s5 .logo b{color:var(--white)}
+
+#play{position:absolute;inset:0;display:grid;place-items:center;background:rgba(15,26,23,.55);z-index:20;cursor:pointer;border:0;color:var(--white);font:800 22px var(--display)}
+#play div{display:flex;flex-direction:column;align-items:center;gap:16px}
+#play i{width:0;height:0;border-left:44px solid var(--white);border-top:28px solid transparent;border-bottom:28px solid transparent;margin-left:10px}
+#play[hidden]{display:none}
+#play:focus-visible{outline:4px solid var(--coral)}
+.ctrl{display:flex;gap:12px;align-items:center;color:#9fb3ad;font-size:13px;flex-wrap:wrap;justify-content:center}
+.ctrl button{background:#1f2e2a;color:var(--white);border:1px solid #33463f;border-radius:6px;padding:7px 14px;font:600 13px var(--display);cursor:pointer}
+.ctrl input[type=range]{width:200px;accent-color:var(--insel)}
+@media (prefers-reduced-motion:reduce){.scene,.shot,.prob,.pro,.new{transition:none!important}}
+</style>
+
+<div id="wrap"><div id="stage">
+  <!-- S1 -->
+  <section class="scene on" id="s1">
+    <div class="logo"><i></i>INSEL<b>SPITAL</b><small>UDEM · Bariatrie</small></div>
+    <h1>Heute: zwei Zentren, zwei Websites</h1>
+    <div class="shot a"><div class="bar"><em></em><em></em><em></em><u>stoffwechsel-gewichtsregulation.insel.ch</u></div><img src="zsg.jpg" alt="Website Zentrum für Stoffwechsel und Gewichtsregulation"></div>
+    <div class="shot b"><div class="bar"><em></em><em></em><em></em><u>adipositasbern.ch</u></div><img src="adi.jpg" alt="Website Adipositaszentrum Bern"></div>
+    <div class="vs">?</div>
+    <div class="cap"><span>Wohin gehört meine Patientin?</span></div>
+  </section>
+
+  <!-- S2 -->
+  <section class="scene" id="s2">
+    <h1>Die Nachteile</h1>
+    <div class="shot a"><div class="bar"><em></em><em></em><em></em><u>ZSG</u></div><img src="zsg.jpg" alt=""></div>
+    <div class="shot b"><div class="bar"><em></em><em></em><em></em><u>Adipositaszentrum</u></div><img src="adi.jpg" alt=""></div>
+    <div class="probs">
+      <div class="prob"><b>!</b><div>Doppelte Inhalte<small>Zwei Angebote, zwei Texte, zweimal Pflegeaufwand</small></div></div>
+      <div class="prob"><b>!</b><div>Unklare Zuständigkeit<small>Zuweisende wissen nicht, wo sie anmelden sollen</small></div></div>
+      <div class="prob"><b>!</b><div>Verwirrte Patient:innen<small>Zwei Telefonnummern, zwei Anlaufstellen</small></div></div>
+      <div class="prob"><b>!</b><div>Uneinheitliches Branding<small>Zwei Logos, zwei Auftritte, eine Insel</small></div></div>
+      <div class="prob"><b>!</b><div>Schwache Google-Sichtbarkeit<small>Die Seiten konkurrieren um dieselben Suchbegriffe</small></div></div>
+    </div>
+  </section>
+
+  <!-- S3 -->
+  <section class="scene" id="s3">
+    <h1>Der Umweg der Zuweisung</h1>
+    <svg id="flow" width="1600" height="900" viewBox="0 0 1600 900">
+      <path id="p1" d="M380 470 C 520 470, 540 300, 670 300" fill="none" stroke="#9aa7a3" stroke-width="5" stroke-dasharray="12 10"/>
+      <path id="p2" d="M930 320 C 1080 340, 1100 610, 1220 610" fill="none" stroke="#d4402e" stroke-width="5" stroke-dasharray="12 10"/>
+    </svg>
+    <div class="node hz">Hausärztin<small>weist zu</small></div>
+    <div class="node a">Zentrum A<small>«Hier nicht zuständig»</small></div>
+    <div class="node b">Zentrum B<small>endlich richtig</small></div>
+    <div class="xmark">✕</div>
+    <div class="pt" id="dot"></div>
+    <div class="clock">Wartezeit<span id="wk">0 Wo.</span></div>
+    <div class="cap"><span>Viele Patient:innen landen zuerst am falschen Ort.</span></div>
+  </section>
+
+  <!-- S4 -->
+  <section class="scene" id="s4">
+    <h1>Neu: eine gemeinsame Website</h1>
+    <div class="new">
+      <div class="shot" style="position:static;width:auto;box-shadow:none;border-radius:0"><div class="bar"><em></em><em></em><em></em><u>stoffwechsel-gewichtsregulation.insel.ch</u></div></div>
+      <div class="hdr"><div class="leaf"></div><strong>Zentrum für Stoffwechsel<br>und Gewichtsregulation</strong><nav><span>Patient:innen</span><span>Angebot</span><span>Zuweisende</span><span>Kontakt</span></nav></div>
+      <div class="hero"><h2>Ein Zentrum. Alle Therapien.</h2><p>Konservativ, medikamentös und bariatrisch, interdisziplinär aus einer Hand.</p></div>
+      <div class="paths">
+        <div class="path"><b>Ernährung &amp; Bewegung</b>Beratung, Programme</div>
+        <div class="path"><b>Medikamentös</b>GLP-1 &amp; Co., UDEM</div>
+        <div class="path hot"><b>Bariatrische Chirurgie</b>Adipositaszentrum</div>
+      </div>
+      <div class="cta">Eine Zuweisung · ein Formular · interne Triage</div>
+    </div>
+    <div class="pros">
+      <div class="pro"><b>✓</b><div>Ein Einstiegspunkt<small>Eine Adresse, eine Nummer</small></div></div>
+      <div class="pro"><b>✓</b><div>Klare Triage<small>Richtiger Pfad ab dem ersten Kontakt</small></div></div>
+      <div class="pro"><b>✓</b><div>Behandlungspfad auf einen Blick<small>Vom Erstgespräch bis zur Operation</small></div></div>
+      <div class="pro"><b>✓</b><div>Ein Auftritt, bessere Auffindbarkeit<small>Einheitliches Insel-Branding, starkes SEO</small></div></div>
+    </div>
+  </section>
+
+  <!-- S5 -->
+  <section class="scene" id="s5">
+    <div class="logo"><i></i>INSEL<b>SPITAL</b><small>UDEM · Bariatrie</small></div>
+    <div><h1>Ein Zentrum.<br>Eine Website.<br>Ein Weg.</h1><p>Zentrum für Stoffwechsel und Gewichtsregulation · Inselspital Bern</p></div>
+  </section>
+
+  <button id="play" type="button" aria-label="Video abspielen"><div><i></i><span>Abspielen (mit Ton)</span></div></button>
+</div></div>
+<div class="ctrl">
+  <button id="replay" type="button">Neu starten</button>
+  <label for="voice">Voiceover</label><input type="checkbox" id="voice" checked>
+  <input type="range" id="seek" min="0" max="27" step="0.1" value="0" aria-label="Zeitleiste">
+  <span id="t">0.0 s</span>
+</div>
+
+<script>
+const stage=document.getElementById('stage'),wrap=document.getElementById('wrap');
+function fit(){stage.style.transform=`scale(${wrap.clientWidth/1600})`}addEventListener('resize',fit);fit();
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const DUR=27;
+// timeline: [start, sceneId]
+const SC=[[0,'s1'],[5,'s2'],[11,'s3'],[17,'s4'],[24,'s5']];
+const VO=[
+ [0.3,'Heute hat das Inselspital zwei Zentren – und zwei Websites.'],
+ [5.2,'Das heisst: doppelte Inhalte, unklare Zuständigkeiten und verwirrte Patientinnen und Patienten.'],
+ [11.2,'Viele werden zuerst dem falschen Zentrum zugewiesen – und verlieren Wochen.'],
+ [17.2,'Die Lösung: eine gemeinsame Website, aufgebaut auf dem ZSG. Ein Einstieg, eine Zuweisung, klare Triage.'],
+ [24.1,'Ein Zentrum. Eine Website. Ein Weg.']];
+let t0=null,raf,spoken=new Set(),ac,master,musicNodes=[];
+
+function render(t){
+  let cur='s1';for(const[s,id]of SC)if(t>=s)cur=id;
+  $$('.scene').forEach(e=>e.classList.toggle('on',e.id===cur));
+  $$('.prob').forEach((e,i)=>e.classList.toggle('show',t>5.8+i*0.9));
+  $$('.pro').forEach((e,i)=>e.classList.toggle('show',t>18.6+i*1.1));
+  // S3 dot along paths
+  const lt=t-11,dot=$('#dot'),p1=$('#p1'),p2=$('#p2');let pt;
+  if(lt<2.2){const L=p1.getTotalLength();pt=p1.getPointAtLength(L*Math.max(0,Math.min(1,lt/2)))}
+  else{const L=p2.getTotalLength();pt=p2.getPointAtLength(L*Math.max(0,Math.min(1,(lt-3)/2)))}
+  dot.style.left=(pt.x-17)+'px';dot.style.top=(pt.y-17)+'px';
+  $('.xmark').style.opacity=lt>2&&lt<3.6?1:0;
+  $('#wk').textContent=Math.round(Math.max(0,Math.min(6,(lt-0.5)*1.4)))+' Wo.';
+  $('#seek').value=t;$('#t').textContent=t.toFixed(1)+' s';
+}
+
+function say(txt){if(!$('#voice').checked||!('speechSynthesis'in window))return;
+  const u=new SpeechSynthesisUtterance(txt);const vs=speechSynthesis.getVoices();
+  u.voice=vs.find(v=>/de-CH/i.test(v.lang))||vs.find(v=>/^de/i.test(v.lang))||null;u.lang='de-CH';u.rate=1.08;speechSynthesis.speak(u)}
+
+// Background music: soft pad + pulse; minor before the fusion, major after.
+function music(){
+  ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+  master=ac.createGain();master.gain.value=0.0;master.connect(ac.destination);
+  master.gain.linearRampToValueAtTime(0.13,ac.currentTime+1.5);
+  master.gain.setValueAtTime(0.13,ac.currentTime+DUR-2);master.gain.linearRampToValueAtTime(0,ac.currentTime+DUR);
+  const chords=[[0,[57,60,64]],[5,[53,57,60]],[11,[50,53,57]],[14,[52,56,59]],[17,[60,64,67]],[20.5,[55,59,62]],[24,[53,57,60,65]]];
+  const f=m=>440*Math.pow(2,(m-69)/12),now=ac.currentTime;
+  chords.forEach(([s,notes],i)=>{const e=(chords[i+1]?.[0]??DUR);
+    notes.forEach(n=>{const o=ac.createOscillator(),g=ac.createGain(),lp=ac.createBiquadFilter();
+      o.type='triangle';o.frequency.value=f(n);lp.type='lowpass';lp.frequency.value=1200;
+      g.gain.setValueAtTime(0,now+s);g.gain.linearRampToValueAtTime(0.18,now+s+0.6);g.gain.linearRampToValueAtTime(0,now+e+0.3);
+      o.connect(lp).connect(g).connect(master);o.start(now+s);o.stop(now+e+0.4);musicNodes.push(o)});
+    // pulse
+    for(let b=s;b<e;b+=0.5){const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=f(notes[0]-12);
+      g.gain.setValueAtTime(0.0001,now+b);g.gain.exponentialRampToValueAtTime(0.35,now+b+0.02);g.gain.exponentialRampToValueAtTime(0.0001,now+b+0.4);
+      o.connect(g).connect(master);o.start(now+b);o.stop(now+b+0.45);musicNodes.push(o)}
+  });
+}
+function stopAll(){cancelAnimationFrame(raf);musicNodes.forEach(o=>{try{o.stop()}catch(e){}});musicNodes=[];try{speechSynthesis.cancel()}catch(e){}}
+function loop(){const t=(performance.now()-t0)/1000;
+  for(const[s,txt]of VO)if(t>=s&&!spoken.has(s)){spoken.add(s);say(txt)}
+  render(Math.min(t,DUR));if(t<DUR)raf=requestAnimationFrame(loop)}
+function start(){stopAll();spoken.clear();$('#play').hidden=true;t0=performance.now();music();loop()}
+$('#play').onclick=start;$('#replay').onclick=start;
+$('#seek').oninput=e=>{stopAll();render(+e.target.value)};
+if('speechSynthesis'in window)speechSynthesis.getVoices();
+render(0);
+</script>
